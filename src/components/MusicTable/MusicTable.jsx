@@ -1,65 +1,60 @@
-import React, { Component } from "react";
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Table from 'react-bootstrap/Table'
+import React from "react";
+import BootstrapTable from 'react-bootstrap-table-next';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+// import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
+const columns = [{
+  dataField: 'id',
+  text: 'ID',
+  sort: false,
+  hidden: true
+}, {
+  dataField: 'title',
+  text: 'title',
+  filter: textFilter(),
+  sort: true
+}, {
+  dataField: 'artist',
+  text: 'artist',
+  filter: textFilter(),
+  sort: true
+},{
+  dataField: 'album',
+  text: 'album',
+  filter: textFilter(),
+  sort: true
+},{
+  dataField: 'release_date',
+  text: 'release_date',
+  filter: textFilter(),
+  sort: true
+},{
+  dataField: 'genre',
+  filter: textFilter(),
+  text: 'genre'
+},{
+  dataField: 'liked',
+  filter: textFilter(),
+  text: 'liked'
+}];
 
-class MusicTable extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            songs: []
-        }
-    }
-    componentDidMount(){
-        this.getSongList();
-    }
-
-    async getSongList(){
-        let response = await axios.get('http://127.0.0.1:8000/music/');
-        this.setState({
-            songs: response.data
-        });
-    }
-
-    async deleteSong(songID){
-        let response = await axios.delete('http://127.0.0.1:8000/music/' + songID);
-        console.log(response);
-        window.location.reload();
-    }
-
-    render(){
-        return(
-            <div className="row justify-content-center">
-            {/* <hr/> */}
-            <h2>All Songs:</h2>
-            <table className="striped bordered hover variant=dark">
-                <thead>
-                    <th>Title</th>
-                    <th>Artist</th>
-                    <th>Album</th>
-                    <th>Release Date</th>
-                    <th>Genre</th>
-                    <th>Liked:</th>
-                </thead>
-                {this.state.songs.map((song)=>{
-                    return(
-                        <tr>
-                            <td>{song.title}</td>
-                            <td>{song.artist}</td>
-                            <td>{song.album}</td>
-                            <td>{song.release_date}</td>
-                            <td>{song.genre}</td>
-                            <td>{song.liked}</td>
-                            <td></td> 
-                        </tr>  
-                    );
-                })}
-            </table>
-            </div>
-         );
-    }
-
+const MusicTable = (props) => {
+  console.log("console log music table begin");
+  console.log(props.songData);
+  console.log("props log")
+  return(
+        <><BootstrapTable
+          keyField="id"
+          data={props.songData}
+          columns={columns}
+          filter={ filterFactory()}
+          striped
+          hover
+          condensed
+          
+          /></>
+      );
 }
+
 
 export default MusicTable;
