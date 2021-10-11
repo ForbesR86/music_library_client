@@ -36,7 +36,43 @@ const columns = [{
   dataField: 'liked',
   filter: textFilter(),
   text: 'liked'
-}];
+},{
+  dataField: "id",
+  text: "Remove",
+  editable: false,
+  formatter: (cellContent, row) => {
+    return (
+      <button
+        className="btn btn-danger btn-xs"
+        onClick={() => handleDelete(row.id)}
+      >
+        Delete
+      </button>
+    );
+  }},{
+    dataField: "id",
+    text: "Edit",
+    editable: false,
+    formatter: (cellContent, row) => {
+      return (
+        <button
+          className="btn btn-success btn-xs"
+          onClick={() => handleEdit(row.id)}
+        >
+          Edit
+        </button>
+      );
+    },
+},
+];
+
+const handleDelete = (rowId) => {
+console.log(rowId);
+};
+
+const handleEdit = (rowId) => {
+  console.log(rowId);
+  };
 
 const MusicTable = (props) => {
   console.log("console log music table begin");
