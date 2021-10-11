@@ -7,7 +7,7 @@ class SongForm extends Component {
             artist: '',
             album: '',
             release_date: '',
-            genre: '',
+            genre: 'Rock',
             liked: false,
          }
     }
@@ -43,17 +43,17 @@ class SongForm extends Component {
 
                 <div class="form-group">
                 <label for="exampleSelect1" class="form-label mt-4">Genre:</label>
-                    <select class="form-select" id="genre">
-                        <option>Rock</option>
-                        <option>Pop</option>
-                        <option>Hip hop</option>
-                        <option>Country</option>
-                        <option>Jazz</option>
-                        <option>Metal</option>
-                        <option>Electronic</option>
-                        <option>Classical</option>
-                        <option>Punk</option>
-                        <option>Other</option>
+                    <select class="form-select" id="genre" value={this.state.genre} onChange={this.handleChange}>
+                        <option value="Rock">Rock</option>
+                        <option value="Pop">Pop</option>
+                        <option value="Hip Hop">Hip hop</option>
+                        <option value="Country">Country</option>
+                        <option value="Jazz">Jazz</option>
+                        <option value="Metal">Metal</option>
+                        <option value="Electronic">Electronic</option>
+                        <option value="Classical">Classical</option>
+                        <option value="Punk">Punk</option>
+                        <option value="Other">Other</option>
                     </select>
     </div>
                 <label>Favorite Song?</label>

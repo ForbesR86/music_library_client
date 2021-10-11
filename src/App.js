@@ -22,12 +22,9 @@ class App extends Component {
     };
   };
 
-    
-  
-  
   componentDidMount() {
     document.body.style.backgroundColor = "#282c34"
-    axios.get(`http://127.0.0.1:8000/music/`)
+    axios.get('http://127.0.0.1:8000/music/')
       .then(res => {
         const musiclist = res.data;
         this.setState({
@@ -41,9 +38,20 @@ class App extends Component {
 
 
   AddNewSong =(newSong)=> {
-    this.songs.push(newSong);
+    console.log(newSong)
+    const newSongFormatted = {
+      title: newSong.title,
+      artist: newSong.artist,
+      album: newSong.album,
+      release_date: newSong.release_date,
+      genre: newSong.genre,
+      liked: newSong.liked
+    }
+    console.log(newSongFormatted)
+    axios.post('http://127.0.0.1:8000/music/', newSongFormatted)
+        .then(res => console.log(res.data));
     this.setState({
-        personNumber: 0
+        isLoading: false
     })
     }
 
@@ -63,8 +71,8 @@ class App extends Component {
             <Switch>                
              
              <Route
-              exact path='/AddSong'
-              render={() => <SongForm newSongData={AddNewSong} />}
+              exact path='/SongForm'
+              render={() => <SongForm newSongData={this.AddNewSong} />}
              />    
              <Route
               exact path='/'
