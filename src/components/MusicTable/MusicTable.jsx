@@ -1,6 +1,7 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import history from '../History/History';
 // import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 
@@ -70,7 +71,7 @@ const MusicTable = (props) => {
         return (
           <button
             className="btn btn-success btn-xs"
-            onClick={() => handleEdit(row.id)}
+            onClick={() => {history.push('/music/'+row.id); handleEdit(row.id);}}
           >
             Edit
           </button>

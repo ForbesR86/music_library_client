@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
-class SongForm extends Component {
+class EditSong extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: props.songInfo.title,
-            artist: props.songInfo.artist,
-            album: props.songInfo.album,
-            release_date: props.songInfo.release_date,
-            genre: props.songInfo.genre,
-            liked: props.songInfo.liked,
+            title: '',
+            artist: '',
+            album: '',
+            release_date: '',
+            genre: 'Rock',
+            liked: false,
          }
+        //  this.state = {
+        //     title: props.title,
+        //     artist: props.artist,
+        //     album: props.album,
+        //     release_date: props.release_date,
+        //     genre: props.genre,
+        //     liked: props.liked
+            
+        //  }
     }
 
     handleChange = (event) => {
@@ -65,4 +74,4 @@ class SongForm extends Component {
     }
 }
  
-export default SongForm;
+export default EditSong;
