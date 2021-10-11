@@ -51,13 +51,26 @@ class App extends Component {
     axios.post('http://127.0.0.1:8000/music/', newSongFormatted)
         .then(res => console.log(res.data));
     this.setState({
-        isLoading: false
+        isLoading: true
+    })
+
+    }
+
+  deleteSong =(songId)=> {
+    console.log("we made the deleteSong request")
+    console.log(songId)
+	  axios.delete('http://127.0.0.1:8000/music/' + songId + '/')
+	    .then(res => console.log(res.data));
+    this.setState({
+      isLoading: true
     })
     }
 
   render() {
     const mlist = this.state.songs;
+    const { isLoading, songs } = this.state;
     return (
+      
         <><div className="container-fluid">
           <Titlebar />
           <Menu />
@@ -76,7 +89,7 @@ class App extends Component {
              />    
              <Route
               exact path='/'
-              render={() => <MusicTable songData={mlist} />}
+              render={() => <MusicTable songData={mlist} deleteSong={this.deleteSong} editSong={this.EditSong}/>}
              />
 
             </Switch>
