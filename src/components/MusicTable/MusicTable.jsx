@@ -1,7 +1,6 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
-import history from '../History/History';
 // import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 
@@ -10,11 +9,6 @@ const MusicTable = (props) => {
   const handleDelete = (rowId) => {
     console.log(rowId);
     props.deleteSong(rowId)
-  };
-  
-  const handleEdit = (rowId) => {
-    console.log(rowId);
-    props.editSong(rowId)
   };
 
   const columns = [{
@@ -71,7 +65,7 @@ const MusicTable = (props) => {
         return (
           <button
             className="btn btn-success btn-xs"
-            onClick={() => {history.push('/music/'+row.id); handleEdit(row.id);}}
+            onClick={() => {window.location.href='/music/'+row.id;}}
           >
             Edit
           </button>
@@ -85,7 +79,7 @@ const MusicTable = (props) => {
   
   return(
         <><BootstrapTable
-          keyField="id"
+          keyField="title"
           data={props.songData}
           columns={columns}
           filter={ filterFactory()}

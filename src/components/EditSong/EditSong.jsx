@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 class EditSong extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            title: '',
-            artist: '',
-            album: '',
-            release_date: '',
-            genre: 'Rock',
-            liked: false,
-         }
+        // this.state = {
+        //     singlesong:[]
+        //  }
         //  this.state = {
         //     title: props.title,
         //     artist: props.artist,
@@ -19,7 +16,49 @@ class EditSong extends Component {
         //     liked: props.liked
             
         //  }
+        this.state = {
+            id: '',
+            title: '',
+            artist: '',
+            album: '',
+            release_date: '',
+            genre: 'Rock',
+            liked: false,
+         }
     }
+    
+    componentDidMount() {
+        this.getMusicLibrary();
+      }
+    
+      async getMusicLibrary() {
+        console.log(window.location.pathname)
+        var pathArray = window.location.pathname.split('/');
+        var secondLevelLocation = pathArray[2];
+        console.log(secondLevelLocation)
+
+        await axios
+          .get('http://127.0.0.1:8000/music/' + secondLevelLocation + '/')
+          .then(res => {
+                  const single = res.data;
+                  this.setState({
+                        id: single.id,
+                        title: single.title,
+                        artist: single.artist,
+                        album: single.album,
+                        release_date: single.release_date,
+                        genre: single.genre,
+                        liked: single.liked,
+                  })
+                  console.log(window.location.href + '/')
+                  console.log(single)
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+    
+        // this.setState({ songs: musiclist });
+      }
 
     handleChange = (event) => {
 
@@ -68,7 +107,7 @@ class EditSong extends Component {
                 <label>Favorite Song?</label>
                 <input name="liked" onChange={this.handleChange} value={this.state.liked} />
                 <br></br>
-                <button type="submit" class="btn btn-primary btn-lg">Add New Song</button>
+                <button type="submit" class="btn btn-primary btn-lg">Edit This Song</button>
             </form>
          );
     }

@@ -3,12 +3,12 @@ class SongForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: props.songInfo.title,
-            artist: props.songInfo.artist,
-            album: props.songInfo.album,
-            release_date: props.songInfo.release_date,
-            genre: props.songInfo.genre,
-            liked: props.songInfo.liked,
+            title: '',
+            artist: '',
+            album: '',
+            release_date: '',
+            genre: 'Rock',
+            liked: false,
          }
     }
 

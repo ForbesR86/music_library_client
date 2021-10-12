@@ -7,6 +7,7 @@ import history from './components/History/History'
 
 
 
+
 import Titlebar from './components/Header/Header'
 import Menu from './components/Menu/Menu'
 import MusicTable from './components/MusicTable/MusicTable'
@@ -25,36 +26,77 @@ class App extends Component {
     };
   };
 
-  async componentDidMount() {
-    
-    axios.get('http://127.0.0.1:8000/music/')
-      .then(res => {
-        const musiclist = res.data;
-        this.setState({
-          songs: musiclist,
-          isLoading: false
-        })
-      });
+  componentDidMount() {
+    this.getMusicLibrary();
   }
 
-  EditSong = (songId)=> {
+  async getMusicLibrary() {
+    await axios
+      .get('http://127.0.0.1:8000/music/')
+      .then(res => {
+              const musiclist = res.data;
+              this.setState({
+                songs: musiclist,
+                isLoading: false
+              })
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    // this.setState({ songs: musiclist });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.state.isLoading !== false) {
+      this.getMusicLibrary();
+      }
+    
+    }
+
+
+  // componentDidMount() {
+    
+  //   axios.get('http://127.0.0.1:8000/music/')
+  //     .then(res => {
+  //       const musiclist = res.data;
+  //       this.setState({
+  //         songs: musiclist,
+  //         isLoading: false
+  //       })
+  //     })
+  //     .catch(error => {
+  //       this.setState({ errorMessage: error.message });
+  //       console.error('There was an error!', error);
+  //     })
+  // }
+
+  EditSingleSong = (songId)=> {
     console.log(songId)
-    this.GetSingleSong(songId)
+    console.log(songId.id + 'title: ' + songId.title)
+    const putLocation = 'http://127.0.0.1:8000/music/' + songId.id + '/'
+    axios.put(putLocation, songId)
+        .then(response => this.setState({ isLoading: true }))
+        .catch(error => {
+          this.setState({ errorMessage: error.message });
+          console.error('There was an error!', error);
+        });
+    history.go('/')
   }
 
-  GetSingleSong =(songId)=> {
-    const baseURL = 'http://127.0.0.1:8000/music/' + songId + '/'
-    console.log(baseURL)
+  // GetSingleSong =(songId)=> {
+  //   const baseURL = 'http://127.0.0.1:8000/music/' + songId + '/'
+  //   console.log(baseURL)
     
-    axios.get(baseURL)
-      .then(res => {
-        const musiclist = res.data;
-        this.setState({
-          singlesong: musiclist,
-          isLoading: false
-        })
-      });
-  }
+  //   axios.get(baseURL)
+  //     .then(res => {
+  //       const musiclist = res.data;
+  //       this.setState({
+  //         singlesong: musiclist,
+  //         isLoading: false
+  //       })
+  //     });
+  // }
 
   AddNewSong =(newSong)=> {
     console.log(newSong)
@@ -72,13 +114,12 @@ class App extends Component {
     this.setState({
         isLoading: true
     })
-    history.push('/')
+    history.go('/')
 
     }
 
   deleteSong =(songId)=> {
-    console.log("we made the deleteSong request")
-    console.log(songId)
+    console.log('Delete song requested for songId' + songId)
 	  axios.delete('http://127.0.0.1:8000/music/' + songId + '/')
 	    .then(res => console.log(res.data));
     this.setState({
@@ -91,12 +132,8 @@ class App extends Component {
   
 
   render() {
+    // const songid = this.state.singlesong.id;
     const mlist = this.state.songs;
-    // const song = this.state.singlesong;
-    const songid = this.state.singlesong.id;
-    const { isLoading, songs } = this.state;
-    //console.log(song)
-    console.log(isLoading)
     return (
       
         <><div className="container-fluid">
@@ -109,21 +146,21 @@ class App extends Component {
             </div>
 
             <div className="col-md-8">
-            <Router history={history}>
-            <Switch>                
-             
+            <Router history={history} forceRefresh={true}>
+            <Switch >                
+             <Route
+              exact path='/'
+              render={() => <MusicTable songData={mlist} deleteSong={this.deleteSong} key={this.state.songs.title}/>}
+             />
              <Route
               exact path='/SongForm'
               render={() => <SongForm newSongData={this.AddNewSong} />}
              />
              <Route
               exact path='/music/:songid'
-              render={() => <EditSong songId={songid} newSongData={this.NewSong} />}
+              render={() => <EditSong newSongData={this.EditSingleSong} />}
              />    
-             <Route
-              exact path='/'
-              render={() => <MusicTable songData={mlist} deleteSong={this.deleteSong} editSong={this.EditSong} key={this.state.songs.title}/>}
-             />
+             
 
             </Switch>
             </Router>
@@ -138,7 +175,8 @@ class App extends Component {
           </div><Footer />
         </div></>
       
-    );
+    )
   }
 }
+
 export default App;
