@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import { BrowserRouter as Switch, Route, Router} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './bootstrap.min.css'
-import history from './components/History/History'
+import createHistory from 'history/createBrowserHistory';
 
 
 
@@ -15,7 +15,7 @@ import SongForm from './components/SongForm/SongForm'
 import EditSong from './components/EditSong/EditSong'
 import Footer from './components/Footer/Footer'
 
-
+const history = createHistory();
 class App extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +24,7 @@ class App extends Component {
       isLoading: true,
       singlesong:[]
     };
+
   };
 
   componentDidMount() {
@@ -81,7 +82,9 @@ class App extends Component {
           this.setState({ errorMessage: error.message });
           console.error('There was an error!', error);
         });
-    history.go('/')
+    
+        history.push('/');
+        history.go('/');
   }
 
   // GetSingleSong =(songId)=> {
@@ -114,7 +117,8 @@ class App extends Component {
     this.setState({
         isLoading: true
     })
-    history.go('/')
+    history.push('/');
+    history.go('/');
 
     }
 
@@ -148,10 +152,7 @@ class App extends Component {
             <div className="col-md-8">
             <Router history={history} forceRefresh={true}>
             <Switch >                
-             <Route
-              exact path='/'
-              render={() => <MusicTable songData={mlist} deleteSong={this.deleteSong} key={this.state.songs.title}/>}
-             />
+             <Route exact path="/" render={() => <MusicTable songData={mlist} deleteSong={this.deleteSong} key={this.state.songs.title}/>}/>
              <Route
               exact path='/SongForm'
               render={() => <SongForm newSongData={this.AddNewSong} />}
