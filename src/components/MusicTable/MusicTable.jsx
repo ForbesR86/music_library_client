@@ -39,11 +39,13 @@ const MusicTable = (props) => {
   },{
     dataField: 'genre',
     filter: textFilter(),
-    text: 'genre'
+    text: 'genre',
+    sort: true
   },{
     dataField: 'liked',
     filter: textFilter(),
-    text: 'liked'
+    text: 'liked',
+    sort: true
   },{
     dataField: "id",
     text: "Remove",
